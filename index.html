@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archipelago Implementations & Tools</title>
+    <title>The Ultimate Archipelago Index</title>
+    <link rel="icon" href="icon.png" type="image/png">
     <style>
         :root {
             --bg-primary: #0f172a;
@@ -30,6 +31,7 @@
             line-height: 1.6;
         }
 
+        /* Header */
         header {
             text-align: center;
             padding: 3rem 1rem 2rem;
@@ -39,6 +41,19 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            object-fit: cover;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
 
         header h1 {
@@ -47,11 +62,11 @@
             background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
         }
 
         header p { color: var(--text-secondary); font-size: 1.1rem; }
 
+        /* Controls */
         .controls {
             max-width: 1400px;
             margin: 2rem auto;
@@ -107,6 +122,11 @@
             padding: 0.5rem;
             border-radius: 12px;
             border: 1px solid var(--border-color);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .control-group.hidden {
+            display: none;
         }
 
         .control-group label {
@@ -121,13 +141,14 @@
         .btn-pill {
             padding: 0.5rem 1.2rem;
             border-radius: 8px;
-            border: none;
+            border: 1px solid transparent;
             background: transparent;
             color: var(--text-secondary);
             font-weight: 500;
             cursor: pointer;
-            transition: var(--transition);
+            transition: background 0.2s, color 0.2s;
             font-size: 0.9rem;
+            outline: none;
         }
 
         .btn-pill:hover { background: rgba(255, 255, 255, 0.05); color: var(--text-primary); }
@@ -136,9 +157,9 @@
             background: var(--accent-primary);
             color: var(--bg-primary);
             font-weight: 700;
-            box-shadow: 0 4px 6px rgba(56, 189, 248, 0.3);
         }
 
+        /* Grid */
         .grid {
             max-width: 1400px;
             margin: 0 auto;
@@ -148,6 +169,7 @@
             gap: 2rem;
         }
 
+        /* Cards */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -169,11 +191,10 @@
             height: 4px;
             background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
             opacity: 0;
-            transition: var(--transition);
+            transition: opacity 0.3s;
         }
 
         .card:hover {
-            transform: translateY(-5px);
             border-color: var(--accent-primary);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
         }
@@ -219,19 +240,16 @@
             border: 1px solid rgba(129, 140, 248, 0.3);
         }
 
-        .badge-status-official {
-            background: rgba(52, 211, 153, 0.15);
-            color: var(--accent-success);
-            border: 1px solid rgba(52, 211, 153, 0.3);
-        }
+        .badge-impl-core { background: rgba(52, 211, 153, 0.15); color: var(--accent-success); border: 1px solid rgba(52, 211, 153, 0.3); }
+        .badge-impl-custom { background: rgba(56, 189, 248, 0.15); color: var(--accent-primary); border: 1px solid rgba(56, 189, 248, 0.3); }
+        .badge-impl-manual { background: rgba(251, 191, 36, 0.15); color: var(--accent-warning); border: 1px solid rgba(251, 191, 36, 0.3); }
 
-        .badge-status-unofficial {
-            background: rgba(251, 191, 36, 0.15);
-            color: var(--accent-warning);
-            border: 1px solid rgba(251, 191, 36, 0.3);
+        .card-buttons { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 0.5rem; 
+            margin-top: auto; 
         }
-
-        .card-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: auto; }
 
         .card-btn {
             padding: 0.5rem 1rem;
@@ -242,17 +260,17 @@
             text-decoration: none;
             font-size: 0.85rem;
             font-weight: 500;
-            transition: var(--transition);
+            transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
             display: inline-flex;
             align-items: center;
             gap: 0.3rem;
+            outline: none;
         }
 
         .card-btn:hover {
             background: var(--accent-primary);
             color: var(--bg-primary);
             border-color: var(--accent-primary);
-            transform: translateY(-2px);
             box-shadow: 0 4px 6px rgba(56, 189, 248, 0.2);
         }
 
@@ -263,6 +281,7 @@
 
         .card-btn:hover .version { color: var(--bg-primary); opacity: 0.8; }
 
+        /* States */
         .state-message {
             grid-column: 1 / -1;
             text-align: center;
@@ -285,6 +304,7 @@
 
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        /* Responsive */
         @media (max-width: 768px) {
             header h1 { font-size: 1.8rem; }
             .grid { grid-template-columns: 1fr; padding: 0 1rem 2rem; }
@@ -296,7 +316,8 @@
 <body>
 
     <header>
-        <h1>Archipelago Directory</h1>
+        <img src="icon.png" alt="Site Icon" class="header-icon" onerror="this.style.display='none'">
+        <h1>The Ultimate Archipelago Index</h1>
         <p>Browse all implementations, tools, and resources</p>
     </header>
 
@@ -312,24 +333,22 @@
         <div class="filter-sort-row">
             <div class="control-group" id="typeFilters">
                 <label>Type:</label>
-                <button class="btn-pill active" data-filter="all">All</button>
-                <button class="btn-pill" data-filter="Game">Games</button>
+                <button class="btn-pill active" data-filter="Game">Games</button>
                 <button class="btn-pill" data-filter="Tool">Tools</button>
-                <button class="btn-pill" data-filter="Platform">Platforms</button>
             </div>
 
-            <div class="control-group" id="statusFilters">
-                <label>Status:</label>
+            <div class="control-group" id="implFilters">
+                <label>Implementation:</label>
                 <button class="btn-pill active" data-filter="all">All</button>
-                <button class="btn-pill" data-filter="Official">Official</button>
-                <button class="btn-pill" data-filter="Unofficial">Unofficial</button>
+                <button class="btn-pill" data-filter="Core">Core</button>
+                <button class="btn-pill" data-filter="Custom">Custom</button>
+                <button class="btn-pill" data-filter="Manual">Manual</button>
             </div>
 
             <div class="control-group" id="sortOptions">
                 <label>Sort:</label>
                 <button class="btn-pill active" data-sort="az">A-Z</button>
                 <button class="btn-pill" data-sort="za">Z-A</button>
-                <button class="btn-pill" data-sort="type">Type</button>
             </div>
         </div>
     </main>
@@ -347,26 +366,24 @@
         // ==========================================
         let allItems = [];
         let currentSearch = '';
-        let currentTypeFilter = 'all';
-        let currentStatusFilter = 'all';
+        let currentTypeFilter = 'Game'; 
+        let currentImplFilter = 'all';
         let currentSort = 'az';
 
         // ==========================================
-        // DATA FETCHING (Strictly from hosted JSON)
+        // DATA FETCHING
         // ==========================================
         async function loadData() {
             const grid = document.getElementById('gameGrid');
             try {
-                // 1. Fetch the manifest file
-                const manifestRes = await fetch('games/manifest.json');
-                if (!manifestRes.ok) throw new Error(`Manifest fetch failed (Status: ${manifestRes.status})`);
+                const listRes = await fetch('games/_list.json');
+                if (!listRes.ok) throw new Error(`List fetch failed (Status: ${listRes.status})`);
                 
-                const files = await manifestRes.json();
+                const files = await listRes.json();
                 if (!Array.isArray(files) || files.length === 0) {
-                    throw new Error('Manifest is empty or incorrectly formatted.');
+                    throw new Error('List is empty or incorrectly formatted.');
                 }
 
-                // 2. Fetch all individual game JSON files concurrently
                 const promises = files.map(file => 
                     fetch(`games/${file}`).then(res => {
                         if (!res.ok) throw new Error(`Failed to load ${file}`);
@@ -375,8 +392,6 @@
                 );
                 
                 allItems = await Promise.all(promises);
-                
-                // 3. Render if successful
                 renderGrid();
 
             } catch (error) {
@@ -385,7 +400,7 @@
                     <div class="state-message error-state">
                         <p>⚠️ Failed to load the game directory.</p>
                         <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 0.5rem;">
-                            Please ensure <code>games/manifest.json</code> exists and all game files are accessible.
+                            Please ensure <code>games/_list.json</code> exists and all game files are accessible.
                         </p>
                     </div>
                 `;
@@ -398,26 +413,23 @@
         function renderGrid() {
             const grid = document.getElementById('gameGrid');
             
-            // 1. Filter
             let filtered = allItems.filter(item => {
                 const matchesSearch = item.name.toLowerCase().includes(currentSearch.toLowerCase());
-                const matchesType = currentTypeFilter === 'all' || item.type === currentTypeFilter;
-                const matchesStatus = currentStatusFilter === 'all' || item.status === currentStatusFilter;
-                return matchesSearch && matchesType && matchesStatus;
+                const matchesType = item.type === currentTypeFilter;
+                
+                const matchesImpl = currentTypeFilter !== 'Game' || 
+                                    currentImplFilter === 'all' || 
+                                    item.implementation === currentImplFilter;
+                                    
+                return matchesSearch && matchesType && matchesImpl;
             });
 
-            // 2. Sort
             filtered.sort((a, b) => {
                 if (currentSort === 'az') return a.name.localeCompare(b.name);
                 if (currentSort === 'za') return b.name.localeCompare(a.name);
-                if (currentSort === 'type') {
-                    if (a.type !== b.type) return a.type.localeCompare(b.type);
-                    return a.name.localeCompare(b.name);
-                }
                 return 0;
             });
 
-            // 3. Render
             if (filtered.length === 0) {
                 grid.innerHTML = `<div class="state-message"><p>No items match your criteria.</p></div>`;
                 return;
@@ -430,7 +442,6 @@
             const links = item.links || {};
             let buttonsHTML = '';
 
-            // Helper to generate button strictly if URL exists
             const addBtn = (label, url, version) => {
                 if (!url) return;
                 let versionHTML = version ? `<span class="version">(${version})</span>` : '';
@@ -438,10 +449,8 @@
             };
 
             addBtn('Support', links.support);
-            
             if (links.apworld) addBtn('Apworld', links.apworld.url, links.apworld.version);
             if (links.mod) addBtn('Mod', links.mod.url, links.mod.version);
-            
             addBtn('Setup Guide', links.setupGuide);
 
             if (links.trackers && Array.isArray(links.trackers)) {
@@ -454,15 +463,11 @@
 
             addBtn('Information', links.information);
 
-            // Badges
-            let badgesHTML = '';
-            if (item.type) {
-                let typeVersion = item.version ? ` (${item.version})` : '';
-                badgesHTML += `<span class="badge badge-type">${item.type}${typeVersion}</span>`;
-            }
-            if (item.status) {
-                const statusClass = item.status.toLowerCase() === 'official' ? 'badge-status-official' : 'badge-status-unofficial';
-                badgesHTML += `<span class="badge ${statusClass}">${item.status}</span>`;
+            let badgesHTML = `<span class="badge badge-type">${item.type}</span>`;
+            
+            if (item.type === 'Game' && item.implementation) {
+                const implClass = `badge-impl-${item.implementation.toLowerCase()}`;
+                badgesHTML += `<span class="badge ${implClass}">${item.implementation}</span>`;
             }
 
             const logoSrc = item.logo || 'https://via.placeholder.com/64x64/1e293b/94a3b8?text=?';
@@ -497,16 +502,28 @@
             if (e.target.classList.contains('btn-pill')) {
                 document.querySelectorAll('#typeFilters .btn-pill').forEach(b => b.classList.remove('active'));
                 e.target.classList.add('active');
+                
                 currentTypeFilter = e.target.dataset.filter;
+                
+                const implFiltersEl = document.getElementById('implFilters');
+                if (currentTypeFilter === 'Game') {
+                    implFiltersEl.classList.remove('hidden');
+                } else {
+                    implFiltersEl.classList.add('hidden');
+                    currentImplFilter = 'all'; 
+                    document.querySelectorAll('#implFilters .btn-pill').forEach(b => b.classList.remove('active'));
+                    document.querySelector('#implFilters .btn-pill[data-filter="all"]').classList.add('active');
+                }
+                
                 renderGrid();
             }
         });
 
-        document.getElementById('statusFilters').addEventListener('click', (e) => {
+        document.getElementById('implFilters').addEventListener('click', (e) => {
             if (e.target.classList.contains('btn-pill')) {
-                document.querySelectorAll('#statusFilters .btn-pill').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('#implFilters .btn-pill').forEach(b => b.classList.remove('active'));
                 e.target.classList.add('active');
-                currentStatusFilter = e.target.dataset.filter;
+                currentImplFilter = e.target.dataset.filter;
                 renderGrid();
             }
         });
@@ -520,7 +537,6 @@
             }
         });
 
-        // Initialize
         loadData();
     </script>
 </body>
