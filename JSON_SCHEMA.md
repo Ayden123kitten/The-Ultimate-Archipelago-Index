@@ -55,9 +55,9 @@ The `links` object can contain any combination of the following fields. If a fie
 
 Objects used for `apworld`, `mod`, or individual items within the `trackers` array follow this strict structure:
 
-| Field     | Type   | Required | Description                                                                       |
-| --------- | ------ | -------- | --------------------------------------------------------------------------------- |
-| `url`     | String | **Yes**  | The download or destination URL for the resource.                                 |
-| `version` | String | No       | A version string to display next to the button label (e.g., `"v1.2.3"`, `"1.0"`). |
+| Field     | Type   | Required | Description                                                              |
+| --------- | ------ | -------- | ------------------------------------------------------------------------ |
+| `url`     | String | **Yes**  | The download or destination URL for the resource.                        |
+| `version` | String | No       | A string to display next to the button label (e.g., `"Beta"`, `"Fork"`). |
 
 > **Tip:** You can omit any `links` sub-field entirely if it does not apply to your game/tool. The renderer safely handles missing keys.

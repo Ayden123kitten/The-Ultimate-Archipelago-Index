@@ -406,6 +406,7 @@
       }
 
       /* Responsive */
+      /* Responsive */
       @media (max-width: 768px) {
         header h1 {
           font-size: 1.8rem;
@@ -430,17 +431,34 @@
           flex-wrap: wrap;
         }
 
-        /* Keep logos large, but ensure text truncates instead of squishing the logo */
-        .card-logo {
-          width: 56px; /* Or 64px if you prefer the full desktop size */
-          height: 56px;
-          flex-shrink: 0; /* Prevents the logo from being compressed */
+        /* --- CARD MOBILE FIXES --- */
+
+        /* 1. Force the card logo to stay large and anchored top-left */
+        .card-header {
+          align-items: flex-start !important; /* Keeps logo at top if text wraps */
         }
-        .card-title-group {
-          min-width: 0; /* Critical for text-overflow: ellipsis to work in flexbox */
+        .card-logo {
+          width: 64px !important;
+          height: 64px !important;
+          min-width: 64px !important; /* Absolutely prevents flexbox from squishing it */
+          flex-shrink: 0 !important;
         }
 
-        /* Neatly center card buttons if they wrap */
+        /* 2. Force the title to remain bold and handle wrapping gracefully */
+        .card-title {
+          font-weight: 700 !important; /* Forces bold font on mobile */
+          font-size: 1.15rem; /* Slightly reduced size prevents it from pushing the layout */
+          line-height: 1.3;
+          white-space: normal !important; /* Allows text to wrap to a second line instead of truncating awkwardly */
+          overflow: visible !important;
+          text-overflow: clip !important;
+        }
+        .card-title-group {
+          min-width: 0;
+          padding-top: 0.25rem; /* Visually aligns the first line of text with the top of the logo */
+        }
+
+        /* 3. Neatly center card buttons if they wrap */
         .card-buttons {
           justify-content: center;
         }
