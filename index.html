@@ -417,9 +417,31 @@
         .controls {
           padding: 0 1rem;
         }
+
+        /* 1. Fix filter/sort controls alignment */
         .filter-sort-row {
           flex-direction: column;
-          align-items: center;
+          align-items: stretch; /* Makes control groups take full width */
+          gap: 1rem;
+        }
+        .control-group {
+          width: 100%;
+          justify-content: center; /* Centers buttons neatly inside the full-width group */
+          flex-wrap: wrap; /* Prevents horizontal overflow on very small screens */
+        }
+
+        /* 2. Prevent card header text from squishing on narrow screens */
+        .card-logo {
+          width: 48px;
+          height: 48px;
+        }
+        .card-header {
+          gap: 0.75rem;
+        }
+
+        /* 3. Neatly center card buttons if they wrap to a new line */
+        .card-buttons {
+          justify-content: center;
         }
       }
     </style>
