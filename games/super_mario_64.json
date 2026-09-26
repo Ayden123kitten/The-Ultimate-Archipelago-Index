@@ -2,7 +2,6 @@
   "name": "Super Mario 64",
   "type": "Game",
   "implementation": "Core",
-  "afterDark": false,
   "logo": "https://cdn2.steamgriddb.com/logo/26d88423fc6da243ffddf161ca712757.png",
   "links": {
     "support": "https://discord.com/channels/731205301247803413/937206798014898186",

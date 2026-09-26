@@ -1,22 +1,6 @@
-````markdown
 # The Ultimate Archipelago Index - JSON Documentation
 
 This document outlines the required directory structure, schema, and all possible values for creating JSON files to populate The Ultimate Archipelago Index.
-
-## 📁 Directory Structure
-
-The website expects a specific folder layout to fetch and render data correctly:
-
-```text
-/
-├── index.html
-├── icon.png
-└── games/
-    ├── _list.json          # Registry of all game/tool JSON files
-    ├── my_favorite_game.json
-    └── useful_tool.json
-```
-````
 
 ---
 
