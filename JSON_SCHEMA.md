@@ -30,12 +30,7 @@ This file acts as an index for the website to know which individual JSON files t
 **Example:**
 
 ```json
-[
-    "game_1.json",
-    "game_2.json",
-    "tool_1.json",
-    "tool_2.json"
-]
+["game_1.json", "game_2.json", "tool_1.json", "tool_2.json"]
 ```
 
 ---
@@ -46,13 +41,14 @@ Each file listed in `_list.json` must be a valid JSON object following this sche
 
 ### Root Fields
 
-| Field            | Type   | Required | Description                                                                                         | Possible Values                                                                |
-| ---------------- | ------ | -------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| `name`           | String | **Yes**  | The display name of the game or tool.                                                               | Any string (e.g., `"Minecraft"`, `"YAML Generator"`)                           |
-| `type`           | String | **Yes**  | The category of the entry. Determines which filter tab it appears under.                            | `"Game"`, `"Tool"`                                                             |
-| `implementation` | String | No\*     | The implementation type. _\*Highly recommended if `type` is `"Game"` to display the correct badge._ | `"Core"`, `"Custom"`, `"Manual"`                                               |
-| `logo`           | String | No       | A URL pointing to the game/tool's logo or icon (square aspect ratio recommended).                   | Any valid image URL. Falls back to a default placeholder if omitted or broken. |
-| `links`          | Object | No       | An object containing various useful URLs related to the entry.                                      | See _Links Object_ below                                                       |
+| Field          | Type    | Required | Description                                                                                                      | Possible Values                                                                |
+| -------------- | ------- | -------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| name           | String  | Yes      | The display name of the game or tool.                                                                            | Any string (e.g., "Minecraft", "YAML Generator")                               |
+| type           | String  | Yes      | The category of the entry. Determines which filter tab it appears under.                                         | "Game", "Tool"                                                                 |
+| implementation | String  | No\*     | The implementation type. \*Highly recommended if `type` is "Game" to display the correct badge.                  | "Core", "Custom", "Manual"                                                     |
+| afterDark      | Boolean | No       | Indicates whether the game contains 18+ or mature content. Only applicable and filterable when `type` is "Game". | `true`, `false` (defaults to `false` if omitted)                               |
+| logo           | String  | No       | A URL pointing to the game/tool's logo or icon (square aspect ratio recommended).                                | Any valid image URL. Falls back to a default placeholder if omitted or broken. |
+| links          | Object  | No       | An object containing various useful URLs related to the entry.                                                   | See Links Object below                                                         |
 
 ---
 
@@ -60,13 +56,13 @@ Each file listed in `_list.json` must be a valid JSON object following this sche
 
 The `links` object can contain any combination of the following fields. If a field is omitted, its corresponding button will simply not be rendered on the UI card.
 
-| Field         | Type   | Required | Description                                                                                                  |
-| ------------- | ------ | -------- | ------------------------------------------------------------------------------------------------------------ |
-| `support`     | String | No       | URL to a support Discord thread or server.                                                        |
-| `setupGuide`  | String | No       | URL to a setup guide page.                                                                |
+| Field         | Type   | Required | Description                                                                                         |
+| ------------- | ------ | -------- | --------------------------------------------------------------------------------------------------- |
+| `support`     | String | No       | URL to a support Discord thread or server.                                                          |
+| `setupGuide`  | String | No       | URL to a setup guide page.                                                                          |
 | `information` | String | No       | URL to additional information or documentation.                                                     |
-| `apworld`     | Object | No       | Latest release of an Archipelago world package. See _Resource Object_ below.                                       |
-| `mod`         | Object | No       | Latest release of a game mod. See _Resource Object_ below.                                                         |
+| `apworld`     | Object | No       | Latest release of an Archipelago world package. See _Resource Object_ below.                        |
+| `mod`         | Object | No       | Latest release of a game mod. See _Resource Object_ below.                                          |
 | `trackers`    | Array  | No       | A list of trackers. _Note: A maximum of 5 trackers will be displayed._ See _Resource Object_ below. |
 
 ---
@@ -75,9 +71,9 @@ The `links` object can contain any combination of the following fields. If a fie
 
 Objects used for `apworld`, `mod`, or individual items within the `trackers` array follow this strict structure:
 
-| Field     | Type   | Required | Description                                                                                 |
-| --------- | ------ | -------- | ------------------------------------------------------------------------------------------- |
-| `url`     | String | **Yes**  | The download or destination URL for the resource.                                           |
+| Field     | Type   | Required | Description                                                                       |
+| --------- | ------ | -------- | --------------------------------------------------------------------------------- |
+| `url`     | String | **Yes**  | The download or destination URL for the resource.                                 |
 | `version` | String | No       | A version string to display next to the button label (e.g., `"v1.2.3"`, `"1.0"`). |
 
 > **Tip:** You can omit any `links` sub-field entirely if it does not apply to your game/tool. The renderer safely handles missing keys.

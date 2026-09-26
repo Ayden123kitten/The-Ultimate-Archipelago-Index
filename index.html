@@ -43,27 +43,21 @@
       /* Header */
       header {
         text-align: center;
-        padding: 3rem 1rem 2rem;
+        padding: 1.5rem 1rem 1rem; /* Made shorter */
         background: rgba(15, 23, 42, 0.8);
-        backdrop-filter: blur(10px);
         border-bottom: 1px solid var(--border-color);
-        position: sticky;
-        top: 0;
-        z-index: 100;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1rem;
+        gap: 0.5rem; /* Reduced gap */
       }
 
       .header-icon {
         width: 64px;
         height: 64px;
-        border-radius: 16px;
         object-fit: cover;
         background: transparent;
         border: none;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
       }
 
       header h1 {
@@ -75,6 +69,7 @@
           var(--accent-secondary)
         );
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
       }
 
@@ -286,6 +281,12 @@
         border: 1px solid rgba(251, 191, 36, 0.3);
       }
 
+      .badge-after-dark {
+        background: rgba(239, 68, 68, 0.15);
+        color: #f87171;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+      }
+
       .card-buttons {
         display: flex;
         flex-wrap: wrap;
@@ -439,6 +440,13 @@
           <button class="btn-pill" data-filter="Manual">Manual</button>
         </div>
 
+        <div class="control-group hidden" id="afterDarkFilters">
+          <label>After Dark (18+):</label>
+          <button class="btn-pill active" data-filter="all">All</button>
+          <button class="btn-pill" data-filter="true">Yes</button>
+          <button class="btn-pill" data-filter="false">No</button>
+        </div>
+
         <div class="control-group" id="sortOptions">
           <label>Sort:</label>
           <button class="btn-pill active" data-sort="az">A-Z</button>
@@ -458,6 +466,7 @@
       // ==========================================
       // STATE & CONFIGURATION
       // ==========================================
+      let currentAfterDarkFilter = "all";
       let allItems = [];
       let currentSearch = "";
       let currentTypeFilter = "Game";
@@ -520,7 +529,15 @@
             currentImplFilter === "all" ||
             item.implementation === currentImplFilter;
 
-          return matchesSearch && matchesType && matchesImpl;
+          const afterDarkValue = item.afterDark === true ? "true" : "false";
+          const matchesAfterDark =
+            currentTypeFilter !== "Game" ||
+            currentAfterDarkFilter === "all" ||
+            afterDarkValue === currentAfterDarkFilter;
+
+          return (
+            matchesSearch && matchesType && matchesImpl && matchesAfterDark
+          );
         });
 
         filtered.sort((a, b) => {
@@ -568,6 +585,10 @@
 
         let badgesHTML = `<span class="badge badge-type">${item.type}</span>`;
 
+        if (item.type === "Game" && item.afterDark === true) {
+          badgesHTML += `<span class="badge badge-after-dark">18+</span>`;
+        }
+
         if (item.type === "Game" && item.implementation) {
           const implClass = `badge-impl-${item.implementation.toLowerCase()}`;
           badgesHTML += `<span class="badge ${implClass}">${item.implementation}</span>`;
@@ -613,16 +634,30 @@
           currentTypeFilter = e.target.dataset.filter;
 
           const implFiltersEl = document.getElementById("implFilters");
+          const afterDarkFiltersEl =
+            document.getElementById("afterDarkFilters");
+
           if (currentTypeFilter === "Game") {
             implFiltersEl.classList.remove("hidden");
+            afterDarkFiltersEl.classList.remove("hidden");
           } else {
             implFiltersEl.classList.add("hidden");
+            afterDarkFiltersEl.classList.add("hidden");
+
             currentImplFilter = "all";
             document
               .querySelectorAll("#implFilters .btn-pill")
               .forEach((b) => b.classList.remove("active"));
             document
               .querySelector('#implFilters .btn-pill[data-filter="all"]')
+              .classList.add("active");
+
+            currentAfterDarkFilter = "all";
+            document
+              .querySelectorAll("#afterDarkFilters .btn-pill")
+              .forEach((b) => b.classList.remove("active"));
+            document
+              .querySelector('#afterDarkFilters .btn-pill[data-filter="all"]')
               .classList.add("active");
           }
 
@@ -640,6 +675,19 @@
           renderGrid();
         }
       });
+
+      document
+        .getElementById("afterDarkFilters")
+        .addEventListener("click", (e) => {
+          if (e.target.classList.contains("btn-pill")) {
+            document
+              .querySelectorAll("#afterDarkFilters .btn-pill")
+              .forEach((b) => b.classList.remove("active"));
+            e.target.classList.add("active");
+            currentAfterDarkFilter = e.target.dataset.filter;
+            renderGrid();
+          }
+        });
 
       document.getElementById("sortOptions").addEventListener("click", (e) => {
         if (e.target.classList.contains("btn-pill")) {
