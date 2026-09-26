@@ -57,12 +57,11 @@
       }
 
       .header-icon {
-        width: 100%;
-        max-width: 96px;
-        height: auto;
+        width: 64px;
+        height: 64px;
         border-radius: 16px;
         object-fit: cover;
-        border: 2px solid var(--border-color);
+        border: none;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
       }
 
@@ -75,7 +74,6 @@
           var(--accent-secondary)
         );
         -webkit-background-clip: text;
-        background-clip: text;
         -webkit-text-fill-color: transparent;
       }
 
@@ -199,7 +197,7 @@
         background: var(--bg-card);
         border: 1px solid var(--border-color);
         border-radius: 16px;
-        padding: 1.5rem;
+        padding: 0; /* Changed to 0 to allow logo to touch edges */
         display: flex;
         flex-direction: column;
         gap: 1.2rem;
@@ -209,6 +207,23 @@
         overflow: hidden;
       }
 
+      .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(
+          90deg,
+          var(--accent-primary),
+          var(--accent-secondary)
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: 1;
+      }
+
       .card:hover {
         border-color: var(--accent-primary);
         box-shadow:
@@ -216,35 +231,42 @@
           0 10px 10px -5px rgba(0, 0, 0, 0.2);
       }
 
+      .card:hover::before {
+        opacity: 1;
+      }
+
       .card-header {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1rem;
+        gap: 0.75rem;
         text-align: center;
+        padding: 1.5rem 1.5rem 0 1.5rem;
       }
 
       .card-logo {
         width: 100%;
-        max-width: 128px; /* Prevents the logo from growing too large */
-        aspect-ratio: 1 / 1; /* Reserves a square space immediately, preventing layout shift/flicker */
-        border-radius: 12px;
+        height: auto;
+        border-radius: 12px 12px 0 0;
         object-fit: contain;
         background: var(--bg-primary);
-        border: 1px solid var(--border-color);
+        border: none; /* Removes the box around the logo */
         display: block;
+        margin: -1.5rem -1.5rem 0.75rem -1.5rem; /* Pulls logo to the edges of the card */
+        max-height: 300px; /* Prevents overly tall logos from breaking layout */
       }
 
       .card-title-group {
         width: 100%;
-        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
 
       .card-title {
         font-size: 1.25rem;
         font-weight: 700;
         margin: 0;
-        white-space: normal;
         word-wrap: break-word;
       }
 
@@ -291,7 +313,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
-        margin-top: auto;
+        margin: 0 1.5rem 1.5rem 1.5rem;
         justify-content: center;
       }
 
@@ -568,14 +590,14 @@
           badgesHTML += `<span class="badge ${implClass}">${item.implementation}</span>`;
         }
 
-        const logoSrc =
-          item.logo ||
-          "https://via.placeholder.com/150x150/1e293b/94a3b8?text=?";
+        // Fallback to icon.png if no logo is specified
+        const logoSrc = item.logo || "icon.png";
 
         return `
                 <article class="card">
+                    <img src="${logoSrc}" alt="${item.name} Logo" class="card-logo" onerror="this.src='icon.png'">
                     <div class="card-header">
-                            <img src="${logoSrc}" alt="${item.name} Logo" class="card-logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/64x64/1e293b/94a3b8?text=?';">                        <div class="card-title-group">
+                        <div class="card-title-group">
                             <h2 class="card-title">${item.name}</h2>
                             <div class="card-badges">
                                 ${badgesHTML}
