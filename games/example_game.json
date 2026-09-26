@@ -1,0 +1,28 @@
+{
+  "name": "Example Adventure Game",
+  "type": "Game",
+  "implementation": "Custom",
+  "logo": "https://via.placeholder.com/64x64/4ade80/ffffff?text=EAG",
+  "links": {
+    "support": "https://discord.gg/archipelago",
+    "apworld": {
+      "url": "https://example.com/releases/example_game.apworld",
+      "version": "v1.2.0"
+    },
+    "mod": {
+      "url": "https://example.com/releases/example_mod.zip",
+      "version": "v2.0.1"
+    },
+    "setupGuide": "https://archipelago.gg/tutorial/ExampleGame/setup_en",
+    "information": "https://example.com/info",
+    "trackers": [
+      {
+        "url": "https://example.com/tracker/1",
+        "version": "v1.0"
+      },
+      {
+        "url": "https://example.com/tracker/2"
+      }
+    ]
+  }
+}
