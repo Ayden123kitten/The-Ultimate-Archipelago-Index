@@ -207,32 +207,11 @@
         overflow: hidden;
       }
 
-      .card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(
-          90deg,
-          var(--accent-primary),
-          var(--accent-secondary)
-        );
-        opacity: 0;
-        transition: opacity 0.3s;
-        z-index: 1;
-      }
-
       .card:hover {
         border-color: var(--accent-primary);
         box-shadow:
           0 20px 25px -5px rgba(0, 0, 0, 0.3),
           0 10px 10px -5px rgba(0, 0, 0, 0.2);
-      }
-
-      .card:hover::before {
-        opacity: 1;
       }
 
       .card-logo {
@@ -281,7 +260,6 @@
         padding: 0.2rem 0.6rem;
         border-radius: 50px;
         font-weight: 600;
-        text-transform: uppercase;
         letter-spacing: 0.5px;
       }
 
