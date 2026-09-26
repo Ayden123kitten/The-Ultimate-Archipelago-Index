@@ -73,9 +73,37 @@
         -webkit-text-fill-color: transparent;
       }
 
-      header p {
-        color: var(--text-secondary);
-        font-size: 1.1rem;
+      .header-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-top: 0.5rem;
+      }
+
+      .header-btn {
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition:
+          background 0.2s,
+          border-color 0.2s,
+          box-shadow 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+
+      .header-btn:hover {
+        background: var(--accent-primary);
+        color: var(--bg-primary);
+        border-color: var(--accent-primary);
+        box-shadow: 0 4px 6px rgba(56, 189, 248, 0.2);
       }
 
       /* Controls */
@@ -388,18 +416,43 @@
   </head>
   <body>
     <header>
-      <!-- Added fallback to the Archipelago logo if icon.png is missing or case-sensitive mismatch -->
       <img
         src="icon.png"
         alt="Site Icon"
         class="header-icon"
-        onerror="
-          this.src =
-            'https://cdn2.steamgriddb.com/logo/06625c7ab300fe4fca126b8dd5970d2c.png'
-        "
+        onerror="this.style.display = 'none'"
       />
       <h1>The Ultimate Archipelago Index</h1>
-      <p>Browse all implementations, tools, and resources</p>
+      <div class="header-buttons">
+        <a
+          href="https://github.com/Ayden123kitten/The-Ultimate-Archipelago-Index/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="header-btn"
+          >GitHub Repository</a
+        >
+        <a
+          href="https://discord.gg/archipelago"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="header-btn"
+          >Archipelago Discord</a
+        >
+        <a
+          href="https://discord.gg/Sbhy4ykUKn"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="header-btn"
+          >After Dark Discord</a
+        >
+        <a
+          href="https://discord.gg/T5bcsVHByx"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="header-btn"
+          >Manual for Archipelago Discord</a
+        >
+      </div>
     </header>
 
     <main class="controls">
@@ -446,11 +499,23 @@
           <button class="btn-pill" data-filter="true">Yes</button>
           <button class="btn-pill" data-filter="false">No</button>
         </div>
-
         <div class="control-group" id="sortOptions">
           <label>Sort:</label>
           <button class="btn-pill active" data-sort="az">A-Z</button>
           <button class="btn-pill" data-sort="za">Z-A</button>
+        </div>
+
+        <div class="control-group" id="totalDisplay">
+          <label>Total:</label>
+          <span
+            id="totalCount"
+            style="
+              color: var(--accent-primary);
+              font-weight: 700;
+              padding: 0 0.5rem;
+            "
+            >0</span
+          >
         </div>
       </div>
     </main>
@@ -509,6 +574,7 @@
                         </p>
                     </div>
                 `;
+          document.getElementById("totalCount").textContent = "0";
         }
       }
 
@@ -546,6 +612,8 @@
           return 0;
         });
 
+        document.getElementById("totalCount").textContent = filtered.length;
+
         if (filtered.length === 0) {
           grid.innerHTML = `<div class="state-message"><p>No items match your criteria.</p></div>`;
           return;
@@ -557,7 +625,6 @@
       function createCardHTML(item) {
         const links = item.links || {};
         let buttonsHTML = "";
-
         const addBtn = (label, url, version) => {
           if (!url) return;
           let versionHTML = version
@@ -566,6 +633,8 @@
           buttonsHTML += `<a href="${url}" target="_blank" rel="noopener noreferrer" class="card-btn">${label} ${versionHTML}</a>`;
         };
 
+        // Information is now the first button
+        addBtn("Information", links.information);
         addBtn("Support", links.support);
         if (links.apworld)
           addBtn("Apworld", links.apworld.url, links.apworld.version);
@@ -580,8 +649,6 @@
             addBtn(trackerLabel, tracker.url, tracker.version);
           });
         }
-
-        addBtn("Information", links.information);
 
         let badgesHTML = `<span class="badge badge-type">${item.type}</span>`;
 
