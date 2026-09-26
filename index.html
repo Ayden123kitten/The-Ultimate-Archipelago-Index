@@ -1,418 +1,511 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Ultimate Archipelago Index</title>
-    <link rel="icon" href="icon.png" type="image/png">
+    <link rel="icon" href="icon.png" type="image/png" />
     <style>
-        :root {
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --bg-card: #1e293b;
-            --border-color: #334155;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent-primary: #38bdf8;
-            --accent-secondary: #818cf8;
-            --accent-success: #34d399;
-            --accent-warning: #fbbf24;
-            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      :root {
+        --bg-primary: #0f172a;
+        --bg-secondary: #1e293b;
+        --bg-card: #1e293b;
+        --border-color: #334155;
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --accent-primary: #38bdf8;
+        --accent-secondary: #818cf8;
+        --accent-success: #34d399;
+        --accent-warning: #fbbf24;
+        --shadow:
+          0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background: linear-gradient(135deg, var(--bg-primary) 0%, #1e1b4b 100%);
+        color: var(--text-primary);
+        min-height: 100vh;
+        line-height: 1.6;
+      }
+
+      /* Header */
+      header {
+        text-align: center;
+        padding: 3rem 1rem 2rem;
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .header-icon {
+        width: 100%;
+        max-width: 96px;
+        height: auto;
+        border-radius: 16px;
+        object-fit: cover;
+        border: 2px solid var(--border-color);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      header h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(
+          90deg,
+          var(--accent-primary),
+          var(--accent-secondary)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      header p {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+      }
+
+      /* Controls */
+      .controls {
+        max-width: 1400px;
+        margin: 2rem auto;
+        padding: 0 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .search-container {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .search-container input {
+        width: 100%;
+        padding: 1rem 1.5rem 1rem 3rem;
+        border-radius: 50px;
+        border: 1px solid var(--border-color);
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        font-size: 1rem;
+        outline: none;
+        transition: var(--transition);
+      }
+
+      .search-container input:focus {
+        border-color: var(--accent-primary);
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 1.2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-secondary);
+      }
+
+      .filter-sort-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .control-group {
+        display: flex;
+        gap: 0.5rem;
+        background: var(--bg-secondary);
+        padding: 0.5rem;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        transition:
+          opacity 0.3s ease,
+          transform 0.3s ease;
+      }
+
+      .control-group.hidden {
+        display: none;
+      }
+
+      .control-group label {
+        display: flex;
+        align-items: center;
+        padding: 0 0.5rem;
+        color: var(--text-secondary);
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+
+      .btn-pill {
+        padding: 0.5rem 1.2rem;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--text-secondary);
+        font-weight: 500;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          color 0.2s;
+        font-size: 0.9rem;
+        outline: none;
+      }
+
+      .btn-pill:hover {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-primary);
+      }
+
+      .btn-pill.active {
+        background: var(--accent-primary);
+        color: var(--bg-primary);
+        font-weight: 700;
+      }
+
+      /* Grid */
+      .grid {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem 4rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 2rem;
+      }
+
+      /* Cards */
+      .card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        transition: var(--transition);
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(
+          90deg,
+          var(--accent-primary),
+          var(--accent-secondary)
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .card:hover {
+        border-color: var(--accent-primary);
+        box-shadow:
+          0 20px 25px -5px rgba(0, 0, 0, 0.3),
+          0 10px 10px -5px rgba(0, 0, 0, 0.2);
+      }
+
+      .card:hover::before {
+        opacity: 1;
+      }
+
+      .card-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        text-align: center;
+      }
+
+      .card-logo {
+        width: 100%;
+        height: auto;
+        border-radius: 12px;
+        object-fit: contain;
+        background: var(--bg-primary);
+        border: 1px solid var(--border-color);
+      }
+
+      .card-title-group {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .card-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin: 0;
+        white-space: normal;
+        word-wrap: break-word;
+      }
+
+      .card-badges {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.25rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .badge {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 50px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .badge-type {
+        background: rgba(129, 140, 248, 0.15);
+        color: var(--accent-secondary);
+        border: 1px solid rgba(129, 140, 248, 0.3);
+      }
+
+      .badge-impl-core {
+        background: rgba(52, 211, 153, 0.15);
+        color: var(--accent-success);
+        border: 1px solid rgba(52, 211, 153, 0.3);
+      }
+      .badge-impl-custom {
+        background: rgba(56, 189, 248, 0.15);
+        color: var(--accent-primary);
+        border: 1px solid rgba(56, 189, 248, 0.3);
+      }
+      .badge-impl-manual {
+        background: rgba(251, 191, 36, 0.15);
+        color: var(--accent-warning);
+        border: 1px solid rgba(251, 191, 36, 0.3);
+      }
+
+      .card-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: auto;
+        justify-content: center;
+      }
+
+      .card-btn {
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition:
+          background 0.2s,
+          border-color 0.2s,
+          box-shadow 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        outline: none;
+      }
+
+      .card-btn:hover {
+        background: var(--accent-primary);
+        color: var(--bg-primary);
+        border-color: var(--accent-primary);
+        box-shadow: 0 4px 6px rgba(56, 189, 248, 0.2);
+      }
+
+      .card-btn .version {
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+      }
+
+      .card-btn:hover .version {
+        color: var(--bg-primary);
+        opacity: 0.8;
+      }
+
+      /* States */
+      .state-message {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 4rem 2rem;
+        color: var(--text-secondary);
+        font-size: 1.2rem;
+      }
+
+      .error-state p:first-child {
+        color: var(--accent-warning);
+        font-weight: 600;
+      }
+      .error-state code {
+        background: var(--bg-primary);
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.9rem;
+      }
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid var(--border-color);
+        border-top-color: var(--accent-primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1rem;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
         }
+      }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, var(--bg-primary) 0%, #1e1b4b 100%);
-            color: var(--text-primary);
-            min-height: 100vh;
-            line-height: 1.6;
-        }
-
-        /* Header */
-        header {
-            text-align: center;
-            padding: 3rem 1rem 2rem;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .header-icon {
-            width: 100%;
-            max-width: 96px;
-            height: auto;
-            border-radius: 16px;
-            object-fit: cover;
-            border: 2px solid var(--border-color);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
-
+      /* Responsive */
+      @media (max-width: 768px) {
         header h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+          font-size: 1.8rem;
         }
-
-        header p { color: var(--text-secondary); font-size: 1.1rem; }
-
-        /* Controls */
-        .controls {
-            max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .search-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .search-container input {
-            width: 100%;
-            padding: 1rem 1.5rem 1rem 3rem;
-            border-radius: 50px;
-            border: 1px solid var(--border-color);
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            font-size: 1rem;
-            outline: none;
-            transition: var(--transition);
-        }
-
-        .search-container input:focus {
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 1.2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-        }
-
-        .filter-sort-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        .control-group {
-            display: flex;
-            gap: 0.5rem;
-            background: var(--bg-secondary);
-            padding: 0.5rem;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        .control-group.hidden {
-            display: none;
-        }
-
-        .control-group label {
-            display: flex;
-            align-items: center;
-            padding: 0 0.5rem;
-            color: var(--text-secondary);
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .btn-pill {
-            padding: 0.5rem 1.2rem;
-            border-radius: 8px;
-            border: 1px solid transparent;
-            background: transparent;
-            color: var(--text-secondary);
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.2s, color 0.2s;
-            font-size: 0.9rem;
-            outline: none;
-        }
-
-        .btn-pill:hover { background: rgba(255, 255, 255, 0.05); color: var(--text-primary); }
-
-        .btn-pill.active {
-            background: var(--accent-primary);
-            color: var(--bg-primary);
-            font-weight: 700;
-        }
-
-        /* Grid */
         .grid {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem 4rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 2rem;
+          grid-template-columns: 1fr;
+          padding: 0 1rem 2rem;
         }
-
-        /* Cards */
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-            transition: var(--transition);
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
+        .controls {
+          padding: 0 1rem;
         }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-            opacity: 0;
-            transition: opacity 0.3s;
+        .filter-sort-row {
+          flex-direction: column;
+          align-items: center;
         }
-
-        .card:hover {
-            border-color: var(--accent-primary);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-        }
-
-        .card:hover::before { opacity: 1; }
-
-        .card-header { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            gap: 1rem; 
-            text-align: center;
-        }
-
-        .card-logo {
-            width: 100%;
-            height: auto;
-            border-radius: 12px;
-            object-fit: contain;
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-        }
-
-        .card-title-group { 
-            width: 100%;
-            min-width: 0; 
-        }
-
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin: 0;
-            white-space: normal;
-            word-wrap: break-word;
-        }
-
-        .card-badges { 
-            display: flex; 
-            gap: 0.5rem; 
-            margin-top: 0.25rem; 
-            flex-wrap: wrap; 
-            justify-content: center; 
-        }
-
-        .badge {
-            font-size: 0.75rem;
-            padding: 0.2rem 0.6rem;
-            border-radius: 50px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .badge-type {
-            background: rgba(129, 140, 248, 0.15);
-            color: var(--accent-secondary);
-            border: 1px solid rgba(129, 140, 248, 0.3);
-        }
-
-        .badge-impl-core { background: rgba(52, 211, 153, 0.15); color: var(--accent-success); border: 1px solid rgba(52, 211, 153, 0.3); }
-        .badge-impl-custom { background: rgba(56, 189, 248, 0.15); color: var(--accent-primary); border: 1px solid rgba(56, 189, 248, 0.3); }
-        .badge-impl-manual { background: rgba(251, 191, 36, 0.15); color: var(--accent-warning); border: 1px solid rgba(251, 191, 36, 0.3); }
-
-        .card-buttons { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 0.5rem; 
-            margin-top: auto; 
-            justify-content: center;
-        }
-
-        .card-btn {
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            outline: none;
-        }
-
-        .card-btn:hover {
-            background: var(--accent-primary);
-            color: var(--bg-primary);
-            border-color: var(--accent-primary);
-            box-shadow: 0 4px 6px rgba(56, 189, 248, 0.2);
-        }
-
-        .card-btn .version {
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-        }
-
-        .card-btn:hover .version { color: var(--bg-primary); opacity: 0.8; }
-
-        /* States */
-        .state-message {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-        }
-
-        .error-state p:first-child { color: var(--accent-warning); font-weight: 600; }
-        .error-state code { background: var(--bg-primary); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.9rem; }
-
-        .spinner {
-            width: 40px; height: 40px;
-            border: 4px solid var(--border-color);
-            border-top-color: var(--accent-primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            header h1 { font-size: 1.8rem; }
-            .grid { grid-template-columns: 1fr; padding: 0 1rem 2rem; }
-            .controls { padding: 0 1rem; }
-            .filter-sort-row { flex-direction: column; align-items: center; }
-        }
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <header>
-        <img src="icon.png" alt="Site Icon" class="header-icon" onerror="this.style.display='none'">
-        <h1>The Ultimate Archipelago Index</h1>
-        <p>Browse all implementations, tools, and resources</p>
+      <img
+        src="icon.png"
+        alt="Site Icon"
+        class="header-icon"
+        onerror="this.style.display = 'none'"
+      />
+      <h1>The Ultimate Archipelago Index</h1>
+      <p>Browse all implementations, tools, and resources</p>
     </header>
 
     <main class="controls">
-        <div class="search-container">
-            <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input type="text" id="searchInput" placeholder="Search games and tools...">
+      <div class="search-container">
+        <svg
+          class="search-icon"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search games and tools..."
+        />
+      </div>
+
+      <div class="filter-sort-row">
+        <div class="control-group" id="typeFilters">
+          <label>Type:</label>
+          <button class="btn-pill active" data-filter="Game">Games</button>
+          <button class="btn-pill" data-filter="Tool">Tools</button>
         </div>
 
-        <div class="filter-sort-row">
-            <div class="control-group" id="typeFilters">
-                <label>Type:</label>
-                <button class="btn-pill active" data-filter="Game">Games</button>
-                <button class="btn-pill" data-filter="Tool">Tools</button>
-            </div>
-
-            <div class="control-group" id="implFilters">
-                <label>Implementation:</label>
-                <button class="btn-pill active" data-filter="all">All</button>
-                <button class="btn-pill" data-filter="Core">Core</button>
-                <button class="btn-pill" data-filter="Custom">Custom</button>
-                <button class="btn-pill" data-filter="Manual">Manual</button>
-            </div>
-
-            <div class="control-group" id="sortOptions">
-                <label>Sort:</label>
-                <button class="btn-pill active" data-sort="az">A-Z</button>
-                <button class="btn-pill" data-sort="za">Z-A</button>
-            </div>
+        <div class="control-group" id="implFilters">
+          <label>Implementation:</label>
+          <button class="btn-pill active" data-filter="all">All</button>
+          <button class="btn-pill" data-filter="Core">Core</button>
+          <button class="btn-pill" data-filter="Custom">Custom</button>
+          <button class="btn-pill" data-filter="Manual">Manual</button>
         </div>
+
+        <div class="control-group" id="sortOptions">
+          <label>Sort:</label>
+          <button class="btn-pill active" data-sort="az">A-Z</button>
+          <button class="btn-pill" data-sort="za">Z-A</button>
+        </div>
+      </div>
     </main>
 
     <section class="grid" id="gameGrid">
-        <div class="state-message">
-            <div class="spinner"></div>
-            <p>Loading directory...</p>
-        </div>
+      <div class="state-message">
+        <div class="spinner"></div>
+        <p>Loading directory...</p>
+      </div>
     </section>
 
     <script>
-        // ==========================================
-        // STATE & CONFIGURATION
-        // ==========================================
-        let allItems = [];
-        let currentSearch = '';
-        let currentTypeFilter = 'Game'; 
-        let currentImplFilter = 'all';
-        let currentSort = 'az';
+      // ==========================================
+      // STATE & CONFIGURATION
+      // ==========================================
+      let allItems = [];
+      let currentSearch = "";
+      let currentTypeFilter = "Game";
+      let currentImplFilter = "all";
+      let currentSort = "az";
 
-        // ==========================================
-        // DATA FETCHING
-        // ==========================================
-        async function loadData() {
-            const grid = document.getElementById('gameGrid');
-            try {
-                const listRes = await fetch('games/_list.json');
-                if (!listRes.ok) throw new Error(`List fetch failed (Status: ${listRes.status})`);
-                
-                const files = await listRes.json();
-                if (!Array.isArray(files) || files.length === 0) {
-                    throw new Error('List is empty or incorrectly formatted.');
-                }
+      // ==========================================
+      // DATA FETCHING
+      // ==========================================
+      async function loadData() {
+        const grid = document.getElementById("gameGrid");
+        try {
+          const listRes = await fetch("games/_list.json");
+          if (!listRes.ok)
+            throw new Error(`List fetch failed (Status: ${listRes.status})`);
 
-                const promises = files.map(file => 
-                    fetch(`games/${file}`).then(res => {
-                        if (!res.ok) throw new Error(`Failed to load ${file}`);
-                        return res.json();
-                    })
-                );
-                
-                allItems = await Promise.all(promises);
-                renderGrid();
+          const files = await listRes.json();
+          if (!Array.isArray(files) || files.length === 0) {
+            throw new Error("List is empty or incorrectly formatted.");
+          }
 
-            } catch (error) {
-                console.error("Error loading directory:", error);
-                grid.innerHTML = `
+          const promises = files.map((file) =>
+            fetch(`games/${file}`).then((res) => {
+              if (!res.ok) throw new Error(`Failed to load ${file}`);
+              return res.json();
+            })
+          );
+
+          allItems = await Promise.all(promises);
+          renderGrid();
+        } catch (error) {
+          console.error("Error loading directory:", error);
+          grid.innerHTML = `
                     <div class="state-message error-state">
                         <p>⚠️ Failed to load the game directory.</p>
                         <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 0.5rem;">
@@ -420,75 +513,84 @@
                         </p>
                     </div>
                 `;
-            }
+        }
+      }
+
+      // ==========================================
+      // RENDERING
+      // ==========================================
+      function renderGrid() {
+        const grid = document.getElementById("gameGrid");
+
+        let filtered = allItems.filter((item) => {
+          const matchesSearch = item.name
+            .toLowerCase()
+            .includes(currentSearch.toLowerCase());
+          const matchesType = item.type === currentTypeFilter;
+
+          const matchesImpl =
+            currentTypeFilter !== "Game" ||
+            currentImplFilter === "all" ||
+            item.implementation === currentImplFilter;
+
+          return matchesSearch && matchesType && matchesImpl;
+        });
+
+        filtered.sort((a, b) => {
+          if (currentSort === "az") return a.name.localeCompare(b.name);
+          if (currentSort === "za") return b.name.localeCompare(a.name);
+          return 0;
+        });
+
+        if (filtered.length === 0) {
+          grid.innerHTML = `<div class="state-message"><p>No items match your criteria.</p></div>`;
+          return;
         }
 
-        // ==========================================
-        // RENDERING
-        // ==========================================
-        function renderGrid() {
-            const grid = document.getElementById('gameGrid');
-            
-            let filtered = allItems.filter(item => {
-                const matchesSearch = item.name.toLowerCase().includes(currentSearch.toLowerCase());
-                const matchesType = item.type === currentTypeFilter;
-                
-                const matchesImpl = currentTypeFilter !== 'Game' || 
-                                    currentImplFilter === 'all' || 
-                                    item.implementation === currentImplFilter;
-                                    
-                return matchesSearch && matchesType && matchesImpl;
-            });
+        grid.innerHTML = filtered.map((item) => createCardHTML(item)).join("");
+      }
 
-            filtered.sort((a, b) => {
-                if (currentSort === 'az') return a.name.localeCompare(b.name);
-                if (currentSort === 'za') return b.name.localeCompare(a.name);
-                return 0;
-            });
+      function createCardHTML(item) {
+        const links = item.links || {};
+        let buttonsHTML = "";
 
-            if (filtered.length === 0) {
-                grid.innerHTML = `<div class="state-message"><p>No items match your criteria.</p></div>`;
-                return;
-            }
+        const addBtn = (label, url, version) => {
+          if (!url) return;
+          let versionHTML = version
+            ? `<span class="version">(${version})</span>`
+            : "";
+          buttonsHTML += `<a href="${url}" target="_blank" rel="noopener noreferrer" class="card-btn">${label} ${versionHTML}</a>`;
+        };
 
-            grid.innerHTML = filtered.map(item => createCardHTML(item)).join('');
+        addBtn("Support", links.support);
+        if (links.apworld)
+          addBtn("Apworld", links.apworld.url, links.apworld.version);
+        if (links.mod) addBtn("Mod", links.mod.url, links.mod.version);
+        addBtn("Setup Guide", links.setupGuide);
+
+        if (links.trackers && Array.isArray(links.trackers)) {
+          const trackers = links.trackers.slice(0, 5);
+          trackers.forEach((tracker, index) => {
+            const trackerLabel =
+              trackers.length > 1 ? `Tracker ${index + 1}` : "Tracker";
+            addBtn(trackerLabel, tracker.url, tracker.version);
+          });
         }
 
-        function createCardHTML(item) {
-            const links = item.links || {};
-            let buttonsHTML = '';
+        addBtn("Information", links.information);
 
-            const addBtn = (label, url, version) => {
-                if (!url) return;
-                let versionHTML = version ? `<span class="version">(${version})</span>` : '';
-                buttonsHTML += `<a href="${url}" target="_blank" rel="noopener noreferrer" class="card-btn">${label} ${versionHTML}</a>`;
-            };
+        let badgesHTML = `<span class="badge badge-type">${item.type}</span>`;
 
-            addBtn('Support', links.support);
-            if (links.apworld) addBtn('Apworld', links.apworld.url, links.apworld.version);
-            if (links.mod) addBtn('Mod', links.mod.url, links.mod.version);
-            addBtn('Setup Guide', links.setupGuide);
+        if (item.type === "Game" && item.implementation) {
+          const implClass = `badge-impl-${item.implementation.toLowerCase()}`;
+          badgesHTML += `<span class="badge ${implClass}">${item.implementation}</span>`;
+        }
 
-            if (links.trackers && Array.isArray(links.trackers)) {
-                const trackers = links.trackers.slice(0, 5);
-                trackers.forEach((tracker, index) => {
-                    const trackerLabel = trackers.length > 1 ? `Tracker ${index + 1}` : 'Tracker';
-                    addBtn(trackerLabel, tracker.url, tracker.version);
-                });
-            }
+        const logoSrc =
+          item.logo ||
+          "https://via.placeholder.com/150x150/1e293b/94a3b8?text=?";
 
-            addBtn('Information', links.information);
-
-            let badgesHTML = `<span class="badge badge-type">${item.type}</span>`;
-            
-            if (item.type === 'Game' && item.implementation) {
-                const implClass = `badge-impl-${item.implementation.toLowerCase()}`;
-                badgesHTML += `<span class="badge ${implClass}">${item.implementation}</span>`;
-            }
-
-            const logoSrc = item.logo || 'https://via.placeholder.com/150x150/1e293b/94a3b8?text=?';
-
-            return `
+        return `
                 <article class="card">
                     <div class="card-header">
                         <img src="${logoSrc}" alt="${item.name} Logo" class="card-logo" onerror="this.src='https://via.placeholder.com/150x150/1e293b/94a3b8?text=?'">
@@ -504,56 +606,66 @@
                     </div>
                 </article>
             `;
+      }
+
+      // ==========================================
+      // EVENT LISTENERS
+      // ==========================================
+      document.getElementById("searchInput").addEventListener("input", (e) => {
+        currentSearch = e.target.value;
+        renderGrid();
+      });
+
+      document.getElementById("typeFilters").addEventListener("click", (e) => {
+        if (e.target.classList.contains("btn-pill")) {
+          document
+            .querySelectorAll("#typeFilters .btn-pill")
+            .forEach((b) => b.classList.remove("active"));
+          e.target.classList.add("active");
+
+          currentTypeFilter = e.target.dataset.filter;
+
+          const implFiltersEl = document.getElementById("implFilters");
+          if (currentTypeFilter === "Game") {
+            implFiltersEl.classList.remove("hidden");
+          } else {
+            implFiltersEl.classList.add("hidden");
+            currentImplFilter = "all";
+            document
+              .querySelectorAll("#implFilters .btn-pill")
+              .forEach((b) => b.classList.remove("active"));
+            document
+              .querySelector('#implFilters .btn-pill[data-filter="all"]')
+              .classList.add("active");
+          }
+
+          renderGrid();
         }
+      });
 
-        // ==========================================
-        // EVENT LISTENERS
-        // ==========================================
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            currentSearch = e.target.value;
-            renderGrid();
-        });
+      document.getElementById("implFilters").addEventListener("click", (e) => {
+        if (e.target.classList.contains("btn-pill")) {
+          document
+            .querySelectorAll("#implFilters .btn-pill")
+            .forEach((b) => b.classList.remove("active"));
+          e.target.classList.add("active");
+          currentImplFilter = e.target.dataset.filter;
+          renderGrid();
+        }
+      });
 
-        document.getElementById('typeFilters').addEventListener('click', (e) => {
-            if (e.target.classList.contains('btn-pill')) {
-                document.querySelectorAll('#typeFilters .btn-pill').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                
-                currentTypeFilter = e.target.dataset.filter;
-                
-                const implFiltersEl = document.getElementById('implFilters');
-                if (currentTypeFilter === 'Game') {
-                    implFiltersEl.classList.remove('hidden');
-                } else {
-                    implFiltersEl.classList.add('hidden');
-                    currentImplFilter = 'all'; 
-                    document.querySelectorAll('#implFilters .btn-pill').forEach(b => b.classList.remove('active'));
-                    document.querySelector('#implFilters .btn-pill[data-filter="all"]').classList.add('active');
-                }
-                
-                renderGrid();
-            }
-        });
+      document.getElementById("sortOptions").addEventListener("click", (e) => {
+        if (e.target.classList.contains("btn-pill")) {
+          document
+            .querySelectorAll("#sortOptions .btn-pill")
+            .forEach((b) => b.classList.remove("active"));
+          e.target.classList.add("active");
+          currentSort = e.target.dataset.sort;
+          renderGrid();
+        }
+      });
 
-        document.getElementById('implFilters').addEventListener('click', (e) => {
-            if (e.target.classList.contains('btn-pill')) {
-                document.querySelectorAll('#implFilters .btn-pill').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                currentImplFilter = e.target.dataset.filter;
-                renderGrid();
-            }
-        });
-
-        document.getElementById('sortOptions').addEventListener('click', (e) => {
-            if (e.target.classList.contains('btn-pill')) {
-                document.querySelectorAll('#sortOptions .btn-pill').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                currentSort = e.target.dataset.sort;
-                renderGrid();
-            }
-        });
-
-        loadData();
+      loadData();
     </script>
-</body>
+  </body>
 </html>

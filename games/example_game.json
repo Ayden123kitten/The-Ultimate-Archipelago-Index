@@ -1,27 +1,24 @@
 {
-  "name": "Example Adventure Game",
+  "name": "Super Mario 64",
   "type": "Game",
-  "implementation": "Custom",
-  "logo": "https://via.placeholder.com/64x64/4ade80/ffffff?text=EAG",
+  "implementation": "Core",
+  "logo": "hthttps://cdn2.steamgriddb.com/logo/26d88423fc6da243ffddf161ca712757.png",
   "links": {
-    "support": "https://discord.gg/archipelago",
-    "apworld": {
-      "url": "https://example.com/releases/example_game.apworld",
-      "version": "v1.2.0"
-    },
-    "mod": {
-      "url": "https://example.com/releases/example_mod.zip",
-      "version": "v2.0.1"
-    },
-    "setupGuide": "https://archipelago.gg/tutorial/ExampleGame/setup_en",
+    "support": "https://discord.com/channels/731205301247803413/937206798014898186",
+    "setupGuide": "https://archipelago.gg/tutorial/Super%20Mario%2064/setup_en",
     "information": "https://example.com/info",
     "trackers": [
       {
-        "url": "https://example.com/tracker/1",
-        "version": "v1.0"
+        "url": "https://github.com/ThePhar/APSM64TrackerPack/releases/download/1.5.1/pharware-sm64-pack_1.5.1.zip",
+        "version": "ThePhar - v1.5.1"
       },
       {
-        "url": "https://example.com/tracker/2"
+        "url": "https://github.com/RaceProUK/SM64EX-APTracker/releases/download/v0.6.0/sm64ex_rando_raceprouk.zip",
+        "version": "RaceProUK - v0.6.0"
+      },
+      {
+        "url": "https://github.com/RBmans/SM64APMoveRandoPopTracker/releases/download/v1.7.3/sm64_moverando_rbm_v1.7.3.zip",
+        "version": "RBMans - v1.7.3"
       }
     ]
   }
