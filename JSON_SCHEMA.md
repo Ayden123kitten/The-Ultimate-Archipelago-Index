@@ -30,7 +30,12 @@ This file acts as an index for the website to know which individual JSON files t
 **Example:**
 
 ```json
-["my_favorite_game.json", "useful_tool.json"]
+[
+    "game_1.json",
+    "game_2.json",
+    "tool_1.json",
+    "tool_2.json"
+]
 ```
 
 ---
@@ -57,12 +62,12 @@ The `links` object can contain any combination of the following fields. If a fie
 
 | Field         | Type   | Required | Description                                                                                                  |
 | ------------- | ------ | -------- | ------------------------------------------------------------------------------------------------------------ |
-| `support`     | String | No       | URL to a support Discord server, forum, or help page.                                                        |
-| `setupGuide`  | String | No       | URL to a setup guide, tutorial, or wiki page.                                                                |
-| `information` | String | No       | URL to additional information, readme, or documentation.                                                     |
-| `apworld`     | Object | No       | Details for an Archipelago world package. See _Resource Object_ below.                                       |
-| `mod`         | Object | No       | Details for a game mod. See _Resource Object_ below.                                                         |
-| `trackers`    | Array  | No       | An array of tracker objects. _Note: A maximum of 5 trackers will be displayed._ See _Resource Object_ below. |
+| `support`     | String | No       | URL to a support Discord thread or server.                                                        |
+| `setupGuide`  | String | No       | URL to a setup guide page.                                                                |
+| `information` | String | No       | URL to additional information or documentation.                                                     |
+| `apworld`     | Object | No       | Latest release of an Archipelago world package. See _Resource Object_ below.                                       |
+| `mod`         | Object | No       | Latest release of a game mod. See _Resource Object_ below.                                                         |
+| `trackers`    | Array  | No       | A list of trackers. _Note: A maximum of 5 trackers will be displayed._ See _Resource Object_ below. |
 
 ---
 
@@ -73,10 +78,6 @@ Objects used for `apworld`, `mod`, or individual items within the `trackers` arr
 | Field     | Type   | Required | Description                                                                                 |
 | --------- | ------ | -------- | ------------------------------------------------------------------------------------------- |
 | `url`     | String | **Yes**  | The download or destination URL for the resource.                                           |
-| `version` | String | No       | A version string to display elegantly next to the button label (e.g., `"v1.2.3"`, `"1.0"`). |
+| `version` | String | No       | A version string to display next to the button label (e.g., `"v1.2.3"`, `"1.0"`). |
 
 > **Tip:** You can omit any `links` sub-field entirely if it does not apply to your game/tool. The renderer safely handles missing keys.
-
-```
-
-```
