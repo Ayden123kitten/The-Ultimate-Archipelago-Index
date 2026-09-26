@@ -61,6 +61,7 @@
         height: 64px;
         border-radius: 16px;
         object-fit: cover;
+        background: transparent;
         border: none;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
       }
@@ -74,6 +75,7 @@
           var(--accent-secondary)
         );
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
       }
 
@@ -197,10 +199,9 @@
         background: var(--bg-card);
         border: 1px solid var(--border-color);
         border-radius: 16px;
-        padding: 0; /* Changed to 0 to allow logo to touch edges */
+        padding: 0; /* Removed padding so logo can spread edge-to-edge */
         display: flex;
         flex-direction: column;
-        gap: 1.2rem;
         transition: var(--transition);
         box-shadow: var(--shadow);
         position: relative;
@@ -235,25 +236,25 @@
         opacity: 1;
       }
 
+      .card-logo {
+        width: 100%;
+        height: auto;
+        max-height: 280px; /* Prevents absurdly tall logos from breaking layout */
+        object-fit: contain;
+        object-position: center;
+        display: block;
+        background: transparent; /* Removes the weird rectangular box */
+        border-radius: 16px 16px 0 0; /* Matches card top radius to prevent clipping */
+      }
+
       .card-header {
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 0.75rem;
         text-align: center;
-        padding: 1.5rem 1.5rem 0 1.5rem;
-      }
-
-      .card-logo {
+        padding: 1.25rem 1.5rem 0 1.5rem;
         width: 100%;
-        height: auto;
-        border-radius: 12px 12px 0 0;
-        object-fit: contain;
-        background: var(--bg-primary);
-        border: none; /* Removes the box around the logo */
-        display: block;
-        margin: -1.5rem -1.5rem 0.75rem -1.5rem; /* Pulls logo to the edges of the card */
-        max-height: 300px; /* Prevents overly tall logos from breaking layout */
       }
 
       .card-title-group {
@@ -313,7 +314,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
-        margin: 0 1.5rem 1.5rem 1.5rem;
+        margin: 1rem 1.5rem 1.5rem 1.5rem;
         justify-content: center;
       }
 
@@ -482,6 +483,8 @@
       let currentTypeFilter = "Game";
       let currentImplFilter = "all";
       let currentSort = "az";
+      const defaultLogo =
+        "https://cdn2.steamgriddb.com/logo/06625c7ab300fe4fca126b8dd5970d2c.png";
 
       // ==========================================
       // DATA FETCHING
@@ -590,12 +593,11 @@
           badgesHTML += `<span class="badge ${implClass}">${item.implementation}</span>`;
         }
 
-        // Fallback to icon.png if no logo is specified
-        const logoSrc = item.logo || "icon.png";
+        const logoSrc = item.logo || defaultLogo;
 
         return `
                 <article class="card">
-                    <img src="${logoSrc}" alt="${item.name} Logo" class="card-logo" onerror="this.src='icon.png'">
+                    <img src="${logoSrc}" alt="${item.name} Logo" class="card-logo" onerror="this.src='${defaultLogo}'">
                     <div class="card-header">
                         <div class="card-title-group">
                             <h2 class="card-title">${item.name}</h2>

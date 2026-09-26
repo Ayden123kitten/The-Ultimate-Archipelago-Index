@@ -2,7 +2,7 @@
   "name": "Super Mario 64",
   "type": "Game",
   "implementation": "Core",
-  "logo": "hthttps://cdn2.steamgriddb.com/logo/26d88423fc6da243ffddf161ca712757.png",
+  "logo": "https://cdn2.steamgriddb.com/logo/26d88423fc6da243ffddf161ca712757.png",
   "links": {
     "support": "https://discord.com/channels/731205301247803413/937206798014898186",
     "setupGuide": "https://archipelago.gg/tutorial/Super%20Mario%2064/setup_en",
