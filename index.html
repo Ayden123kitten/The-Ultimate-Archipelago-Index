@@ -75,7 +75,6 @@
           var(--accent-secondary)
         );
         -webkit-background-clip: text;
-        background-clip: text;
         -webkit-text-fill-color: transparent;
       }
 
@@ -199,7 +198,7 @@
         background: var(--bg-card);
         border: 1px solid var(--border-color);
         border-radius: 16px;
-        padding: 0; /* Removed padding so logo can spread edge-to-edge */
+        padding: 1.5rem; /* Restored padding to create space around the logo and content */
         display: flex;
         flex-direction: column;
         transition: var(--transition);
@@ -237,14 +236,13 @@
       }
 
       .card-logo {
-        width: 100%;
-        height: auto;
-        max-height: 280px; /* Prevents absurdly tall logos from breaking layout */
+        width: 100%; /* Spreads all the way across the padded area */
+        height: auto; /* Height adjusts automatically to maintain the image's aspect ratio */
+        max-height: 250px; /* Safety cap to prevent extremely tall images from breaking the layout */
         object-fit: contain;
-        object-position: center;
         display: block;
-        background: transparent; /* Removes the weird rectangular box */
-        border-radius: 16px 16px 0 0; /* Matches card top radius to prevent clipping */
+        background: transparent; /* Ensures no weird rectangular box appears behind it */
+        margin-bottom: 1rem; /* Space between the logo and the title */
       }
 
       .card-header {
@@ -253,7 +251,6 @@
         align-items: center;
         gap: 0.75rem;
         text-align: center;
-        padding: 1.25rem 1.5rem 0 1.5rem;
         width: 100%;
       }
 
@@ -314,7 +311,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
-        margin: 1rem 1.5rem 1.5rem 1.5rem;
+        margin-top: 1rem;
         justify-content: center;
       }
 
@@ -411,11 +408,15 @@
   </head>
   <body>
     <header>
+      <!-- Added fallback to the Archipelago logo if icon.png is missing or case-sensitive mismatch -->
       <img
         src="icon.png"
         alt="Site Icon"
         class="header-icon"
-        onerror="this.style.display = 'none'"
+        onerror="
+          this.src =
+            'https://cdn2.steamgriddb.com/logo/06625c7ab300fe4fca126b8dd5970d2c.png'
+        "
       />
       <h1>The Ultimate Archipelago Index</h1>
       <p>Browse all implementations, tools, and resources</p>
@@ -593,11 +594,13 @@
           badgesHTML += `<span class="badge ${implClass}">${item.implementation}</span>`;
         }
 
-        const logoSrc = item.logo || defaultLogo;
+        // Robust check: use item.logo if it exists and isn't an empty string, otherwise use default
+        const logoSrc =
+          item.logo && item.logo.trim() !== "" ? item.logo : defaultLogo;
 
         return `
                 <article class="card">
-                    <img src="${logoSrc}" alt="${item.name} Logo" class="card-logo" onerror="this.src='${defaultLogo}'">
+                    <img src="${logoSrc}" alt="${item.name} Logo" class="card-logo" onerror="if(this.src !== '${defaultLogo}') { this.src = '${defaultLogo}'; } else { this.style.display = 'none'; }">
                     <div class="card-header">
                         <div class="card-title-group">
                             <h2 class="card-title">${item.name}</h2>
