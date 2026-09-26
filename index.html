@@ -209,31 +209,11 @@
         overflow: hidden;
       }
 
-      .card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(
-          90deg,
-          var(--accent-primary),
-          var(--accent-secondary)
-        );
-        opacity: 0;
-        transition: opacity 0.3s;
-      }
-
       .card:hover {
         border-color: var(--accent-primary);
         box-shadow:
           0 20px 25px -5px rgba(0, 0, 0, 0.3),
           0 10px 10px -5px rgba(0, 0, 0, 0.2);
-      }
-
-      .card:hover::before {
-        opacity: 1;
       }
 
       .card-header {
@@ -246,11 +226,13 @@
 
       .card-logo {
         width: 100%;
-        height: auto;
+        max-width: 128px; /* Prevents the logo from growing too large */
+        aspect-ratio: 1 / 1; /* Reserves a square space immediately, preventing layout shift/flicker */
         border-radius: 12px;
         object-fit: contain;
         background: var(--bg-primary);
         border: 1px solid var(--border-color);
+        display: block;
       }
 
       .card-title-group {
@@ -593,8 +575,7 @@
         return `
                 <article class="card">
                     <div class="card-header">
-                        <img src="${logoSrc}" alt="${item.name} Logo" class="card-logo" onerror="this.src='https://via.placeholder.com/150x150/1e293b/94a3b8?text=?'">
-                        <div class="card-title-group">
+                            <img src="${logoSrc}" alt="${item.name} Logo" class="card-logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/64x64/1e293b/94a3b8?text=?';">                        <div class="card-title-group">
                             <h2 class="card-title">${item.name}</h2>
                             <div class="card-badges">
                                 ${badgesHTML}
